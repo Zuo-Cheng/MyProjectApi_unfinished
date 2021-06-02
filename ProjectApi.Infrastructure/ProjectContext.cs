@@ -14,6 +14,8 @@ namespace ProjectApi.Infrastructure
 
     public class ProjectContext : DbContext, IUnitOfWork
     {
+
+
         private IMediator _mediatR;
 
         public DbSet<Domain.AggregatesModel.Project> Projects { get; set; }

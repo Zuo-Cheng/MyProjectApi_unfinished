@@ -1,4 +1,5 @@
-﻿using ProjectApi.Domain.AggregatesModel;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectApi.Domain.AggregatesModel;
 using ProjectApi.Domain.SeedWork;
 using System;
 using System.Collections.Generic;
@@ -22,19 +23,35 @@ namespace ProjectApi.Infrastructure.Repositories
         }
        
 
-        public Task<Project> GetAsync(int id)
+        public async Task<Project> GetAsync(int id)
         {
-            throw new NotImplementedException();
+           var entity = await  _context.Projects
+                .Include(t => t.Properties)
+                .Include(t => t.Viewers)
+                .Include(t => t.Contributors)
+                .Include(t => t.VisibleRule)
+                .SingleOrDefaultAsync();
+            return entity;
         }
 
-        public void UpdateAsync(Project project)
+        public void Update(Project project)
         {
-            throw new NotImplementedException();
+           _context.Projects.Update(project);
+
         }
 
-        Task<Project> IProjectRepository.AddAsync(Project project)
+        public Project Add(Project project)
         {
-            throw new NotImplementedException();
+            if (project.IsTransient())
+            {
+
+                return _context.Projects.Add(project).Entity;
+            }
+            else
+            {
+                return project;
+            }
+
         }
     }
 }

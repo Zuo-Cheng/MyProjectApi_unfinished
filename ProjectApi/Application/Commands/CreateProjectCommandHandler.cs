@@ -14,7 +14,7 @@ namespace ProjectApi.Application.Commands
     public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCmmand, Project>
     {
 
-        private readonly IProjectRepository _projectRepository;
+        private  IProjectRepository _projectRepository;
 
         public CreateProjectCommandHandler(IProjectRepository projectRepository)
         {
@@ -22,7 +22,7 @@ namespace ProjectApi.Application.Commands
         }
         public async Task<Project> Handle(CreateProjectCmmand request, CancellationToken cancellationToken)
         {
-            await _projectRepository.AddAsync(request.Project);
+             _projectRepository.Add(request.Project);
             await _projectRepository.UnitOfWork.SaveEntitiesAsync();
             return request.Project;
         }
