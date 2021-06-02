@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Querise\" />
-    <Folder Include="Application\Service\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
@@ -21,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsulExtensions\ConsulExtensions.csproj" />
     <ProjectReference Include="..\ProjectApi.Domain\ProjectApi.Domain.csproj" />
     <ProjectReference Include="..\ProjectApi.Infrastructure\ProjectApi.Infrastructure.csproj" />
   </ItemGroup>

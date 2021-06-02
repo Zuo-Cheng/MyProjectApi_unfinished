@@ -1,3 +1,4 @@
+using ConsulExtensions;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,11 +8,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ProjectApi.Application.Queries;
+using ProjectApi.Application.Service;
 using ProjectApi.Domain.AggregatesModel;
 using ProjectApi.Infrastructure;
 using ProjectApi.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -46,8 +50,25 @@ namespace ProjectApi
                 });
             });
 
+            ////添加Authentication配置
+            ////清除默认的JwtToken默认的绑定
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //        .AddJwtBearer(option =>
+            //        {
+            //            option.RequireHttpsMetadata = false;
+            //            option.Audience = "project_api"; //需要进行验证的 ApiResource
+            //            option.Authority = "http://localhost:5000";
+            //        });
+
+            ////添加Consul服务注入
+            //services.AddConsulClient(Configuration.GetSection("ServiceDiscovery"))
+            //        .AddDnsClient();
+
             //添加服务依赖注入
-            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>()
+                .AddScoped<IProjectQueries,ProjectQueries>()
+                .AddScoped<IRecommendService,TestRecommendService>();
 
             //添加MeditatR注入
             services.AddMediatR(Assembly.GetExecutingAssembly());
